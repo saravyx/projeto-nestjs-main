@@ -1,12 +1,30 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service.js';
+import {Body,Controller,Get,Post,} from '@nestjs/common';
+import { CreateConvidadoDto } from './dto/create-convidado.dto.js';
 
-@Controller('api')
-export class AppController {
-  constructor(private readonly appService: AppService) {}
+@Controller('convidados')
+export class ConvidadosController {
+ private readonly convidados = ['Ana','Bruno','Carlos',
+];
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+
+// GET /convidados
+@Get()
+listarTodos(): string[] {
+return this.convidados;
 }
+// POST /convidados
+@Post()
+criar(
+@Body() createConvidadoDto: CreateConvidadoDto,
+) {
+console.log(
+'Convidado recebido:',
+createConvidadoDto.nome,
+);
+return {
+mensagem: `Convidado ${createConvidadoDto.nome} confirmado com sucesso!`,
+dados: createConvidadoDto,
+};
+}
+}
+
